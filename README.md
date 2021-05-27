@@ -1,6 +1,6 @@
 # Irsender-M5StickC-Plus
 
-a basic infrared remote for TV's using the M5StickC-Plus.
+A basic infrared remote for TV's using the M5StickC-Plus.
 
 Also built using the swanky new PlatformIO plugin for VSCode.
 
