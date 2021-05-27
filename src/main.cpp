@@ -33,7 +33,7 @@
 #include <IRsend.h> //2.7.18 https://github.com/crankyoldgit/IRremoteESP8266
 
 const uint16_t kIrLed = 9;  // ESP32 GPIO pin to use. M5StickC-Plus uses 9 for IR
-
+//float temp = 0;
 IRsend irsend(kIrLed);  // Set the GPIO to be used to sending the message.
 
 // Example Sony TV captured from IRrecvDumpV2.ino
@@ -42,24 +42,36 @@ uint16_t rawData[155] = {2362, 632,  1162, 634,  562, 634,  1162, 632,  564, 636
 
 void setup() {
   M5.begin();
+  M5.IMU.Init();
+  //M5.IMU.getTempData(&temp);
+  M5.Lcd.fillScreen(BLACK);
+  pinMode(M5_LED, OUTPUT); //give power to LED
+  digitalWrite(M5_LED, HIGH); //Turn the LED itself off
+  M5.Axp.ScreenBreath(8); //low power display dimming
+  M5.Lcd.setTextSize(2);
   irsend.begin();
-#if ESP8266
-  Serial.begin(115200, SERIAL_8N1, SERIAL_TX_ONLY);
-#else  // ESP8266
+  digitalWrite(9, HIGH); //fix for IR LED staying on. force it to be off
   Serial.begin(115200, SERIAL_8N1);
-#endif  // ESP8266
+  M5.Lcd.setCursor(40, 10);
+  M5.Lcd.println("M5 IR");
 }
 
 void loop() {
   if(digitalRead(M5_BUTTON_HOME) == LOW){
-  Serial.println("NEC");
+  Serial.println("Vizio NEC");
   M5.Lcd.println("Vizio");
+  //M5.Lcd.printf("Temperature : %.2f C", temp);
+  digitalWrite(M5_LED, LOW);
+  delay(200);
+  digitalWrite(M5_LED, HIGH);
   irsend.sendNEC(0x20DF10EF); //VIZIO TV
-  delay(500);
+  delay(200);
   Serial.println("Sony");
   M5.Lcd.println("Sony");
   irsend.sendSony(0xa90, 12, 2);  // 12 bits & 2 repeats
-  delay(1000);
+  delay(100);
+  digitalWrite(9, HIGH);
+  delay(500);
 //  Serial.println("raw");
 //  M5.Lcd.println("raw");
 //  irsend.sendRaw(rawData,155,38);
