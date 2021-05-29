@@ -21,6 +21,12 @@ M5.Lcd.println("M5 IR");
 M5.Lcd.setTextColor(WHITE);
 }
 
+void clearcircles(){
+  M5.Lcd.drawCircle(12,48,6,BLACK); //#1
+  M5.Lcd.drawCircle(12,48+32,6,BLACK); //#2
+  M5.Lcd.drawCircle(12,48+64,6,BLACK); //#3
+}
+
 // Display the menu options
 void setMenu(){
   M5.Lcd.println("");
@@ -29,8 +35,26 @@ void setMenu(){
   M5.Lcd.println("  Vol Down");
 }
 
-void selector(int choice){
-
+void selector(){
+  switch (menupos)
+  {
+  case 1: //power
+    M5.Lcd.drawCircle(12,48,6,CYAN);
+    break;
+  
+  case 2: //vol up
+    clearcircles();
+    M5.Lcd.drawCircle(12,48+32,6,CYAN);
+    break;
+  
+  case 3: //vol down
+    clearcircles();
+    M5.Lcd.drawCircle(12,48+64,6,CYAN);
+    break;
+  
+  default:
+    break;
+  }
 }
 
 void setup() {
@@ -45,10 +69,22 @@ void setup() {
   M5.Lcd.fillScreen(0x8631); //set the bg color to match the image's background for *transparent* text
   handleScreen();
   setMenu();
+  clearcircles();
+  selector();
   //M5.Lcd.drawCircle(12,48,6,CYAN); //#1
   //M5.Lcd.drawCircle(12,48+32,6,CYAN); //#2
   //M5.Lcd.drawCircle(12,48+64,6,CYAN); //#3
 }
+
 void loop() {
- 
+  if(digitalRead(M5_BUTTON_HOME) == LOW){
+    menupos++;
+    if(menupos>3){
+      menupos = 1;
+      clearcircles();
+    }
+    selector();
+    Serial.println(menupos);
+    delay(250);
+  }
 }
