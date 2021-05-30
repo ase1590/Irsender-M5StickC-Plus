@@ -108,7 +108,7 @@ void loop() {
     }
     selector();
     Serial.println(menupos);
-    delay(200);
+    delay(400);
   }
   if(digitalRead(M5_BUTTON_HOME) == LOW){
     digitalWrite(M5_LED,LOW);
@@ -116,7 +116,7 @@ void loop() {
     digitalWrite(M5_LED,HIGH);
     sendSignal();
     digitalWrite(9,HIGH); //turn off IR led after send
-    delay(250);
+    delay(500);
 
   }
 }
