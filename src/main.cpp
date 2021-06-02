@@ -60,22 +60,34 @@ void selector(){
   }
 }
 
+void graphicDelay(int framecount){
+  for (int i=0; i<=framecount; i++){
+    M5.Lcd.pushImage(0,130,135,101,animation[frame]);
+    frame++;
+    if(frame==32)
+    frame=0;
+    delay(40);
+
+  }
+}
+
 void sendSignal(){
   switch (menupos)
   {
   case 1: //power
     irsend.sendSony(0xa90, 12, 2);
+    graphicDelay(3);
     irsend.sendNEC(0x20DF10EF);
     break;
 
   case 2: //vol up
     irsend.sendSony(0x490,12,1); //sony TV
-    delay(100);
+    graphicDelay(3);
     irsend.sendSony(0x24FF,15,1); //soundbar
 
   case 3: // vol down
     irsend.sendSony(0xC90,12,1); //sony TV
-    delay(100);
+    graphicDelay(3);
     irsend.sendSony(0x64FF,15,1); //soundbar
   
   default:
@@ -113,15 +125,15 @@ void loop() {
     }
     selector();
     Serial.println(menupos);
-    delay(400);
+    graphicDelay(10);
   }
   if(digitalRead(M5_BUTTON_HOME) == LOW){
     digitalWrite(M5_LED,LOW);
-    delay(100);
+    graphicDelay(3);
     digitalWrite(M5_LED,HIGH);
     sendSignal();
     digitalWrite(9,HIGH); //turn off IR led after send
-    delay(500);
+    graphicDelay(12);
 
   }
   M5.Lcd.pushImage(0,130,135,101,animation[frame]);
