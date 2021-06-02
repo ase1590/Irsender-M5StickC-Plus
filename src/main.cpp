@@ -125,7 +125,7 @@ void loop() {
     }
     selector();
     Serial.println(menupos);
-    graphicDelay(10);
+    graphicDelay(8);
   }
   if(digitalRead(M5_BUTTON_HOME) == LOW){
     digitalWrite(M5_LED,LOW);
